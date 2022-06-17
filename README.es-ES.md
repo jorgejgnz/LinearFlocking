@@ -29,7 +29,7 @@ Si el agente es líder, se moverá de forma independiente con una rotación y ve
 Este algoritmo está inspirado en este [artículo](https://www.sciencedirect.com/science/article/abs/pii/S1084804517302606).
 
 <p align="center">
-<img src="images/pseudocode.png" alt="Pseudocódigo" width="350"/>
+<img src="images/pseudocode.PNG" alt="Pseudocódigo" width="350"/>
 </p>
 
 ## Vectores de cada regla
@@ -73,5 +73,5 @@ También es posible activar/desactivar y visualizar la monitorización de los ag
 La siguiente figura muestra un terreno siendo escaneado por los agentes.
 
 <p align="center">
-<img src="images/netlogo-scan.png" alt="Monitorización" width="250"/>
+<img src="images/netlogo-scan.PNG" alt="Monitorización" width="250"/>
 </p>

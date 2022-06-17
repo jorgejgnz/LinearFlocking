@@ -20,9 +20,9 @@ Con la calibración adecuada, los agentes siguen una formación en línea alrede
 
 En cada tick, se elige como líder al agente con menor Id.
 
-Si el agente no es el líder, busca el agente más cercano dentro de un radio y calcula, para cada regla, el vector desplazamiento (relativo al agente) que le harían cumplir esa regla. De este modo se obtienen los vectores $\vec{R1}$, $\vec{R2}$, $\vec{R3}$ y $\vec{R4}$. Después se hace una media ponderada de estos vectores ($\vec{goal}$). La dirección de $\vec{goal}$ indica la dirección a la que debe avanzar el agente y su magnitud indica con qué intensidad debería hacer el movimiento (o cuán lejos está de satisfacer las reglas). Después se calculan los grados que el agente debe rotar para que su dirección coincida con $\vec{goal}$.
+Si el agente no es el líder, busca el agente más cercano dentro de un radio y calcula, para cada regla, el vector desplazamiento (relativo al agente) que le harían cumplir esa regla. De este modo se obtienen los vectores R1, R2, R3 y R4. Después se hace una media ponderada de estos vectores (vector objetivo). La dirección del vector objetivo indica la dirección a la que debe avanzar el agente y su magnitud indica con qué intensidad debería hacer el movimiento (o cuán lejos está de satisfacer las reglas). Después se calculan los grados que el agente debe rotar para que su dirección coincida con la del vector objetivo.
 
-Para evitar comportamientos erráticos, antes de aplicar esta rotación, el número de grados se limita a un valor máximo. Una vez el agente apunta a la dirección correcta el agente avanza una distancia que se calcula como una velocidad mínima (en distancia/tick) + $||\vec{goal}||$. Por último, si es el momento de tomar una captura del terreno, el agente lo hará.
+Para evitar comportamientos erráticos, antes de aplicar esta rotación, el número de grados se limita a un valor máximo. Una vez el agente apunta a la dirección correcta el agente avanza una distancia que se calcula como una velocidad mínima (en distancia/tick) + longitud del vector objetivo. Por último, si es el momento de tomar una captura del terreno, el agente lo hará.
 
 Si el agente es líder, se moverá de forma independiente con una rotación y velocidad que se pueden controlar desde la interfaz de NetLogo.
 
@@ -32,21 +32,19 @@ Este algoritmo está inspirado en este [artículo](https://www.sciencedirect.com
 <img src="images/pseudocode.png" alt="Pseudocódigo" width="350"/>
 </p>
 
-## Vectores objetivo
+## Vectores de cada regla
 
-Los vectores objetivo de cada regla se calculan de la siguiente manera:
+Los vectores de cada regla se calculan de la siguiente manera:
 
--   Para calcular $\vec{R1}$ se obtiene primero el vector que va del agente más cercano hasta nuestra posición ($\vec{v}$). Si $\lVert \vec{v} \rVert$ es menor que la distancia mínima, entonces $\vec{R1}$ tendrá la dirección de $\vec{v}$ y su magnitud, si no se usan magnitudes normalizadas, será la diferencia entre la distancia mínima y $\lVert \vec{v} \rVert$. Si $\lVert \vec{v} \rVert$ es mayor o igual a la distancia mínima, no se deberá hacer ninguna acción y $\vec{R1}$ será $(0,0)$.
+-   Para calcular R1 se obtiene primero el vector que va del agente más cercano hasta nuestra posición (v). Si la longitud de v es menor que la distancia mínima, entonces R1 tendrá la dirección de v y su magnitud, si no se usan magnitudes normalizadas, será la diferencia entre la distancia mínima y la longitud de v. Si la longitud de v es mayor o igual a la distancia mínima, no se deberá hacer ninguna acción y R1 será (0,0).
 
--   $\vec{R2}$ tiene la dirección hacia la que el agente deberá apuntar para que su rotación sea la misma que la rotación media de sus vecinos. Si no se usan magnitudes normalizadas, la magnitud de $\vec{R2}$ será la relación entre el número de grados a rotar y un valor constante.
+-   R2 tiene la dirección hacia la que el agente deberá apuntar para que su rotación sea la misma que la rotación media de sus vecinos. Si no se usan magnitudes normalizadas, la magnitud de R2 será la relación entre el número de grados a rotar y un valor constante.
 
--   $\vec{R3}$ tiene la dirección que va del agente hasta la posición media de los agentes vecinos. Si no se usan vectores normalizados, su magnitud será la distancia del agente hasta esa posición media.
+-   R3 tiene la dirección que va del agente hasta la posición media de los agentes vecinos. Si no se usan vectores normalizados, su magnitud será la distancia del agente hasta esa posición media.
 
--   $\vec{R4}$ tiene la dirección que va del agente hasta la proyección de la posición del agente sobre la línea infinita que cruza al agente líder. Si no se usan vectores normalizados, su magnitud será la distancia del agente hasta esa proyección.
+-   R4 tiene la dirección que va del agente hasta la proyección de la posición del agente sobre la línea infinita que cruza al agente líder. Si no se usan vectores normalizados, su magnitud será la distancia del agente hasta esa proyección.
 
 ## Interfaz
-
-Desde la interfaz de NetLogo se puede indicar que la magnitud de los vectores objetivo se mantenga normalizada así como el peso que se le da a cada uno en la media ponderada.
 
 Desde esta interfaz se pueden modificar los siguientes parámetros principales:
 
@@ -60,11 +58,11 @@ Desde esta interfaz se pueden modificar los siguientes parámetros principales:
 
 -   Dirección y velocidad del agente líder.
 
--   Peso de cada vector objetivo en la media ponderada ($\vec{goal}$).
+-   Influencia de cada vector regla en el vector objetivo.
 
--   Interruptor para utilizar vectores normalizados.
+-   Normalización de vectores regla.
 
--   Influencia de $\lVert\vec{goal}\rVert$ en la velocidad.
+-   Influencia de la longitud del vector objetivo en la velocidad.
 
 -   Distancia mínima (regla R1).
 
